@@ -59,32 +59,26 @@
     });
     
     const data = await response.json();
+    console.log("Datos recibidos:", data); // Mira esto en la consola F12
     
-    // --- ESTO NOS DIRÁ LA VERDAD ---
-    console.log("Mensaje recibido:", data.mensaje); 
+    const msgDiv = document.getElementById('chat-messages');
+    const optionsContainer = document.getElementById('chat-options');
+
+    // --- FORZADO VISUAL ---
+    msgDiv.style.display = "block";
+    msgDiv.style.visibility = "visible";
+    msgDiv.style.color = "black"; // Color negro obligatorio
+    msgDiv.style.height = "auto";
+    msgDiv.innerText = data.mensaje; 
     
-    if (data.mensaje) {
-        const msgDiv = document.getElementById('chat-messages');
-        msgDiv.textContent = data.mensaje; // Usamos textContent en lugar de innerText
-        
-        // Forzamos estilos para asegurar que sea visible
-        msgDiv.style.display = "block";
-        msgDiv.style.color = "black";
-        msgDiv.style.visibility = "visible";
-        msgDiv.style.height = "auto";
-        msgDiv.style.padding = "10px";
-        
-        const optionsContainer = document.getElementById('chat-options');
-        optionsContainer.innerHTML = '';
-        
-        if (data.opciones && Array.isArray(data.opciones)) {
-            data.opciones.forEach(opcion => {
-                const btn = document.createElement('button');
-                btn.innerText = opcion;
-                btn.onclick = () => getBotResponse(opcion);
-                optionsContainer.appendChild(btn);
-            });
-        }
+    optionsContainer.innerHTML = '';
+    if (data.opciones && Array.isArray(data.opciones)) {
+        data.opciones.forEach(opcion => {
+            const btn = document.createElement('button');
+            btn.innerText = opcion;
+            btn.onclick = () => getBotResponse(opcion);
+            optionsContainer.appendChild(btn);
+        });
     }
 }
     </script>

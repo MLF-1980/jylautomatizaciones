@@ -34,3 +34,7 @@ body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background
 .publicidad img:hover {
     transform: scale(1.02); 
 }
+/* Corrección para que el texto del chat sea visible */
+#chat-messages {
+    color: #000000 !important;
+}
