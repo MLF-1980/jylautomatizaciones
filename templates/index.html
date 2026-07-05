@@ -63,7 +63,21 @@
     
     const msgDiv = document.getElementById('chat-messages');
     const optionsContainer = document.getElementById('chat-options');
-
+    if (data.opciones && Array.isArray(data.opciones)) {
+            data.opciones.forEach(opcion => {
+                const btn = document.createElement('button');
+                btn.innerText = opcion;
+                
+                // AQUÍ VA LA LÓGICA DE CALENDLY
+                if (opcion === "Abrir Calendly") {
+                    btn.onclick = () => window.open("https://calendly.com/mauro-l-fiscina", "_blank");
+                } else {
+                    btn.onclick = () => getBotResponse(opcion);
+                }
+                
+                optionsContainer.appendChild(btn);
+            });
+        }
     // --- FORZADO VISUAL ---
     msgDiv.style.display = "block";
     msgDiv.style.visibility = "visible";

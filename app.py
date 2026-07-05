@@ -1,13 +1,3 @@
-from flask import Flask, render_template, request, jsonify
-
-app = Flask(__name__)
-
-# Esta es tu ruta actual (¡no la borres!)
-@app.route("/")
-def home():
-    return render_template("index.html")
-
-# Aquí pegamos la nueva ruta del bot
 @app.route('/api/chat', methods=['POST'])
 def chat():
     data = request.get_json()
@@ -28,14 +18,28 @@ def chat():
             "mensaje": "Automatizo procesos para que ahorres tiempo. ¿Te interesa?",
             "opciones": ["Agendar", "Volver"]
         })
+    elif estado == 'Agendar':
+        # Aquí pones tu enlace de Calendly real
+        return jsonify({
+            "mensaje": "¡Genial! Haz clic en el botón de abajo para abrir mi agenda.",
+            "opciones": ["Abrir Calendly"] 
+        })
+    elif estado == 'Abrir Calendly':
+        # Esto redirige al usuario o le muestra el link
+        return jsonify({
+            "mensaje": "Copiando enlace: https://calendly.com/TU-USUARIO",
+            "opciones": ["Volver al inicio"]
+        })
+    elif estado == 'Volver' or estado == 'Volver al inicio':
+        return jsonify({
+            "mensaje": "¡Hola! Soy el asistente de JyL. ¿En qué te ayudo hoy?",
+            "opciones": ["Web", "Automatización"]
+        })
     
-   # ... (tus elif anteriores)
-    
-    # Asegúrate de que incluso en el caso de error se envíe una lista vacía de opciones
     return jsonify({
         "mensaje": "No entendí, pero puedes contactarme directamente.",
-        "opciones": [] 
-    })
+        "opciones": [] })
 
 if __name__ == "__main__":
     app.run(debug=True)
+    
