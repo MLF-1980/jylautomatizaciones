@@ -9,65 +9,49 @@
 <body>
 
     <!-- Botón Flotante del Bot -->
-<div id="chat-button" onclick="toggleChat()" style="position: fixed; bottom: 20px; right: 20px; background: #007bff; color: white; padding: 15px; border-radius: 50%; cursor: pointer; font-size: 24px; z-index: 1000;">💬</div>
+    <div id="chat-button" onclick="toggleChat()" style="position: fixed; bottom: 20px; right: 20px; background: #007bff; color: white; padding: 15px; border-radius: 50%; cursor: pointer; font-size: 24px; z-index: 1000;">💬</div>
 
-<!-- Ventana de Chat (Oculta al inicio) -->
-<div id="chat-window" style="display: none; position: fixed; bottom: 80px; right: 20px; width: 300px; height: 400px; background: white; border: 1px solid #ccc; border-radius: 10px; padding: 15px; z-index: 1000; box-shadow: 0px 0px 10px rgba(0,0,0,0.1);">
-    <div id="chat-messages" style="height: 250px; overflow-y: auto; margin-bottom: 10px; font-family: sans-serif;"></div>
-    <div id="chat-options" style="display: flex; flex-direction: column; gap: 5px;"></div>
-</div>
+    <!-- Ventana de Chat (Oculta al inicio) -->
+    <div id="chat-window" style="display: none; position: fixed; bottom: 80px; right: 20px; width: 300px; height: 400px; background: white; border: 1px solid #ccc; border-radius: 10px; padding: 15px; z-index: 1000; box-shadow: 0px 0px 10px rgba(0,0,0,0.1);">
+        <div id="chat-messages" style="height: 250px; overflow-y: auto; margin-bottom: 10px; font-family: sans-serif;"></div>
+        <div id="chat-options" style="display: flex; flex-direction: column; gap: 5px;"></div>
+    </div>
 
     <!-- Hero -->
     <section class="hero">
         <h1>JyL_Automatizaciones</h1>
         <p>Potenciando tu negocio con tecnología y automatización inteligente.</p>
-        <a href="#" onclick="window.voiceflow.chat.open(); return false;" class="btn-main">Empezar ahora</a>
+        <!-- Botón actualizado para abrir tu nuevo chat -->
+        <a href="#" onclick="toggleChat(); return false;" class="btn-main">Empezar ahora</a>
     </section>
 
     <!-- Servicios -->
-<section id="servicios" class="servicios">
-    <h2>Nuestros Servicios</h2>
-    
-    <!-- Este es el contenedor de la cuadrícula -->
-    <div class="grid-servicios">
-        <div class="card">
-            <h3>Desarrollo Web</h3>
-            <p>Sitios modernos y funcionales.</p>
-        </div>
-        
-        <div class="card">
-            <h3>Bots de Automatización</h3>
-            <p>Atención al cliente 24/7.</p>
-        </div>
-    </div> 
-    <!-- AQUÍ SE CIERRA EL GRID. Ya no hay nada más adentro -->
+    <section id="servicios" class="servicios">
+        <h2>Nuestros Servicios</h2>
+        <div class="grid-servicios">
+            <div class="card">
+                <h3>Desarrollo Web</h3>
+                <p>Sitios modernos y funcionales.</p>
+            </div>
+            <div class="card">
+                <h3>Bots de Automatización</h3>
+                <p>Atención al cliente 24/7.</p>
+            </div>
+        </div> 
 
-    <!-- La publicidad va aquí, afuera, para que ocupe todo el ancho -->
-    <section class="publicidad">
-        <img src="{{ url_for('static', filename='img/publicidad.png') }}" alt="Promoción de Servicios">
+        <section class="publicidad">
+            <img src="{{ url_for('static', filename='img/publicidad.png') }}" alt="Promoción de Servicios">
+        </section>
     </section>
 
-</section>
+    <script>
+    function toggleChat() {
+        const chatWindow = document.getElementById('chat-window');
+        chatWindow.style.display = (chatWindow.style.display === 'none') ? 'block' : 'none';
+        if(chatWindow.style.display === 'block') getBotResponse('inicio');
+    }
 
-    <!-- Botón Flotante del Bot -->
-<div id="chat-button" onclick="toggleChat()" style="position: fixed; bottom: 20px; right: 20px; background: #007bff; color: white; padding: 15px; border-radius: 50%; cursor: pointer; font-size: 24px; z-index: 1000;">💬</div>
-
-<!-- Ventana de Chat (Oculta al inicio) -->
-<div id="chat-window" style="display: none; position: fixed; bottom: 80px; right: 20px; width: 300px; height: 400px; background: white; border: 1px solid #ccc; border-radius: 10px; padding: 10px; z-index: 1000; box-shadow: 0px 0px 10px rgba(0,0,0,0.1);">
-    <div id="chat-messages" style="height: 300px; overflow-y: auto; margin-bottom: 10px;"></div>
-    <div id="chat-controls"></div>
-</div>
-
-<script>
-function toggleChat() {
-    const chatWindow = document.getElementById('chat-window');
-    chatWindow.style.display = (chatWindow.style.display === 'none') ? 'block' : 'none';
-    if(chatWindow.style.display === 'block') getBotResponse('inicio');
-}
-
-async function getBotResponse(estado) {
-    console.log("Enviando estado:", estado); // Esto te dirá en la consola si se activa
-    
+    async function getBotResponse(estado) {
     const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -75,13 +59,21 @@ async function getBotResponse(estado) {
     });
     
     const data = await response.json();
-    console.log("Respuesta recibida del servidor:", data); // Esto te dirá si el servidor responde
     
-    // Si la respuesta es correcta, dibujamos
+    // --- ESTO NOS DIRÁ LA VERDAD ---
+    console.log("Mensaje recibido:", data.mensaje); 
+    
     if (data.mensaje) {
-        document.getElementById('chat-messages').innerText = data.mensaje;
+        const msgDiv = document.getElementById('chat-messages');
+        msgDiv.textContent = data.mensaje; // Usamos textContent en lugar de innerText
         
-        // Limpiamos y dibujamos botones si existen
+        // Forzamos estilos para asegurar que sea visible
+        msgDiv.style.display = "block";
+        msgDiv.style.color = "black";
+        msgDiv.style.visibility = "visible";
+        msgDiv.style.height = "auto";
+        msgDiv.style.padding = "10px";
+        
         const optionsContainer = document.getElementById('chat-options');
         optionsContainer.innerHTML = '';
         
@@ -95,6 +87,6 @@ async function getBotResponse(estado) {
         }
     }
 }
-}</script>
+    </script>
 </body>
 </html>
