@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JyL_Automatizaciones | Soluciones Inteligentes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="logo">
+           <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo">
+        </div>
+        <div class="nav-links">
+            <a href="#servicios">Servicios</a>
+            <a href="#" onclick="window.voiceflow.chat.open(); return false;" class="btn-nav">Consulta aquí</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1>JyL_Automatizaciones</h1>
+        <p>Potenciando tu negocio con tecnología y automatización inteligente.</p>
+        <a href="#" onclick="window.voiceflow.chat.open(); return false;" class="btn-main">Empezar ahora</a>
+    </section>
+
+    <!-- Servicios -->
+<section id="servicios" class="servicios">
+    <h2>Nuestros Servicios</h2>
+    
+    <!-- Este es el contenedor de la cuadrícula -->
+    <div class="grid-servicios">
+        <div class="card">
+            <h3>Desarrollo Web</h3>
+            <p>Sitios modernos y funcionales.</p>
+        </div>
+        
+        <div class="card">
+            <h3>Bots de Automatización</h3>
+            <p>Atención al cliente 24/7.</p>
+        </div>
+    </div> 
+    <!-- AQUÍ SE CIERRA EL GRID. Ya no hay nada más adentro -->
+
+    <!-- La publicidad va aquí, afuera, para que ocupe todo el ancho -->
+    <section class="publicidad">
+        <img src="{{ url_for('static', filename='img/publicidad.png') }}" alt="Promoción de Servicios">
+    </section>
+
+</section>
+
+    <!-- Script del Bot --> 
+    <script type="text/javascript">
+      (function(d, t) {
+          var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+          v.onload = function() {
+            window.voiceflow.chat.load({
+              verify: { projectID: '6a469d16f4234036ecea63ea' },
+              url: 'https://general-runtime.voiceflow.com',
+              voice: { url: "https://runtime-api.voiceflow.com" }
+            });
+          }
+          v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+      })(document, 'script');
+    </script>
+</body>
+</html>
