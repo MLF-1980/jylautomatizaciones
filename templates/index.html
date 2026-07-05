@@ -50,26 +50,40 @@
         chatWindow.style.display = (chatWindow.style.display === 'none') ? 'block' : 'none';
         if(chatWindow.style.display === 'block') getBotResponse('inicio');
     }
-
+    // Línea 54: Reemplaza desde aquí
     async function getBotResponse(estado) {
+    // Línea 55: Obtenemos los datos del servidor
     const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ estado: estado })
     });
-    
     const data = await response.json();
-    console.log("Datos recibidos:", data); // Mira esto en la consola F12
-    
+
+    // Línea 62: Definimos los elementos DOM una sola vez
     const msgDiv = document.getElementById('chat-messages');
     const optionsContainer = document.getElementById('chat-options');
 
-   // AGREGA ESTO PARA QUE SE VEA EL TEXTO:
+    // Línea 65: Actualizamos el mensaje y limpiamos botones previos
     msgDiv.innerHTML = data.mensaje; 
+    optionsContainer.innerHTML = ''; 
 
-    // Limpiamos los botones anteriores antes de agregar los nuevos
-    optionsContainer.innerHTML = '';
-
+    // Línea 69: Creamos los botones basados en la respuesta
+    if (data.opciones && Array.isArray(data.opciones)) {
+        data.opciones.forEach(opcion => {
+            const btn = document.createElement('button');
+            btn.innerText = opcion;
+            
+            // Línea 74: Lógica para Calendly o navegación
+            if (opcion === "Abrir Calendly") {
+                btn.onclick = () => window.location.href = "https://calendly.com/mauro-l-fiscina";
+            } else {
+                btn.onclick = () => getBotResponse(opcion);
+            }
+            optionsContainer.appendChild(btn);
+        })
+    }
+    } // Línea 83: Fin de la función
     if (data.opciones && Array.isArray(data.opciones)) {
             data.opciones.forEach(opcion => {
                 const btn = document.createElement('button');
@@ -99,9 +113,8 @@
             btn.innerText = opcion;
             btn.onclick = () => getBotResponse(opcion);
             optionsContainer.appendChild(btn);
-        });
+        })
     }
-}
     </script>
 </body>
 </html>

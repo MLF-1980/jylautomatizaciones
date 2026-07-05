@@ -28,8 +28,8 @@ def chat():
         })
     elif estado == 'Agendar':
         return jsonify({
-            "mensaje": "¡Genial! Haz clic en el botón de abajo para abrir mi agenda.",
-            "opciones": ["Abrir Calendly"]
+            "mensaje": "Haz clic aquí para abrir mi agenda: <a href='https://calendly.com/mauro-l-fiscina' target='_blank'><b>Ir al Calendario</b></a>",
+            "opciones": ["Volver al inicio"]
         })
     elif estado == 'Abrir Calendly':
         return jsonify({
