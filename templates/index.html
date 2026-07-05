@@ -8,16 +8,14 @@
 </head>
 <body>
 
-    <!-- Navegación -->
-    <nav class="navbar">
-        <div class="logo">
-           <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo">
-        </div>
-        <div class="nav-links">
-            <a href="#servicios">Servicios</a>
-            <a href="#" onclick="window.voiceflow.chat.open(); return false;" class="btn-nav">Consulta aquí</a>
-        </div>
-    </nav>
+    <!-- Botón Flotante del Bot -->
+<div id="chat-button" onclick="toggleChat()" style="position: fixed; bottom: 20px; right: 20px; background: #007bff; color: white; padding: 15px; border-radius: 50%; cursor: pointer; font-size: 24px; z-index: 1000;">💬</div>
+
+<!-- Ventana de Chat (Oculta al inicio) -->
+<div id="chat-window" style="display: none; position: fixed; bottom: 80px; right: 20px; width: 300px; height: 400px; background: white; border: 1px solid #ccc; border-radius: 10px; padding: 15px; z-index: 1000; box-shadow: 0px 0px 10px rgba(0,0,0,0.1);">
+    <div id="chat-messages" style="height: 250px; overflow-y: auto; margin-bottom: 10px; font-family: sans-serif;"></div>
+    <div id="chat-options" style="display: flex; flex-direction: column; gap: 5px;"></div>
+</div>
 
     <!-- Hero -->
     <section class="hero">
@@ -74,7 +72,23 @@ async function getBotResponse(estado) {
         body: JSON.stringify({ estado: estado })
     });
     const data = await response.json();
+    
+    // Mostrar el mensaje del servidor
     document.getElementById('chat-messages').innerText = data.mensaje;
+    
+    // Limpiar botones anteriores
+    const optionsContainer = document.getElementById('chat-options');
+    optionsContainer.innerHTML = '';
+    
+    // Crear botones nuevos dinámicamente según la respuesta del servidor
+    data.opciones.forEach(opcion => {
+        const btn = document.createElement('button');
+        btn.innerText = opcion;
+        btn.onclick = () => getBotResponse(opcion);
+        btn.style.padding = '8px';
+        btn.style.cursor = 'pointer';
+        optionsContainer.appendChild(btn);
+    });
 }
 </script>
 </body>

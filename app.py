@@ -29,7 +29,13 @@ def chat():
             "opciones": ["Agendar", "Volver"]
         })
     
-    return jsonify({"mensaje": "No entendí, pero puedes contactarme directamente."})
+   # ... (tus elif anteriores)
+    
+    # Asegúrate de que incluso en el caso de error se envíe una lista vacía de opciones
+    return jsonify({
+        "mensaje": "No entendí, pero puedes contactarme directamente.",
+        "opciones": [] 
+    })
 
 if __name__ == "__main__":
     app.run(debug=True)
