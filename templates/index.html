@@ -51,19 +51,31 @@
 
 </section>
 
-    <!-- Script del Bot --> 
-    <script type="text/javascript">
-      (function(d, t) {
-          var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
-          v.onload = function() {
-            window.voiceflow.chat.load({
-              verify: { projectID: '6a469d16f4234036ecea63ea' },
-              url: 'https://general-runtime.voiceflow.com',
-              voice: { url: "https://runtime-api.voiceflow.com" }
-            });
-          }
-          v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
-      })(document, 'script');
-    </script>
+    <!-- Botón Flotante del Bot -->
+<div id="chat-button" onclick="toggleChat()" style="position: fixed; bottom: 20px; right: 20px; background: #007bff; color: white; padding: 15px; border-radius: 50%; cursor: pointer; font-size: 24px; z-index: 1000;">💬</div>
+
+<!-- Ventana de Chat (Oculta al inicio) -->
+<div id="chat-window" style="display: none; position: fixed; bottom: 80px; right: 20px; width: 300px; height: 400px; background: white; border: 1px solid #ccc; border-radius: 10px; padding: 10px; z-index: 1000; box-shadow: 0px 0px 10px rgba(0,0,0,0.1);">
+    <div id="chat-messages" style="height: 300px; overflow-y: auto; margin-bottom: 10px;"></div>
+    <div id="chat-controls"></div>
+</div>
+
+<script>
+function toggleChat() {
+    const chatWindow = document.getElementById('chat-window');
+    chatWindow.style.display = (chatWindow.style.display === 'none') ? 'block' : 'none';
+    if(chatWindow.style.display === 'block') getBotResponse('inicio');
+}
+
+async function getBotResponse(estado) {
+    const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ estado: estado })
+    });
+    const data = await response.json();
+    document.getElementById('chat-messages').innerText = data.mensaje;
+}
+</script>
 </body>
 </html>
