@@ -63,6 +63,13 @@
     
     const msgDiv = document.getElementById('chat-messages');
     const optionsContainer = document.getElementById('chat-options');
+
+   // AGREGA ESTO PARA QUE SE VEA EL TEXTO:
+    msgDiv.innerHTML = data.mensaje; 
+
+    // Limpiamos los botones anteriores antes de agregar los nuevos
+    optionsContainer.innerHTML = '';
+
     if (data.opciones && Array.isArray(data.opciones)) {
             data.opciones.forEach(opcion => {
                 const btn = document.createElement('button');
@@ -70,7 +77,7 @@
                 
                 // AQUÍ VA LA LÓGICA DE CALENDLY
                 if (opcion === "Abrir Calendly") {
-                    btn.onclick = () => window.open("https://calendly.com/mauro-l-fiscina", "_blank");
+                   btn.onclick = () => window.location.href = "https://calendly.com/mauro-l-fiscina";
                 } else {
                     btn.onclick = () => getBotResponse(opcion);
                 }

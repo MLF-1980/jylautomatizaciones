@@ -1,3 +1,11 @@
+from flask import Flask, render_template, request, jsonify
+
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return render_template("index.html")
+
 @app.route('/api/chat', methods=['POST'])
 def chat():
     data = request.get_json()
@@ -19,13 +27,11 @@ def chat():
             "opciones": ["Agendar", "Volver"]
         })
     elif estado == 'Agendar':
-        # Aquí pones tu enlace de Calendly real
         return jsonify({
             "mensaje": "¡Genial! Haz clic en el botón de abajo para abrir mi agenda.",
-            "opciones": ["Abrir Calendly"] 
+            "opciones": ["Abrir Calendly"]
         })
     elif estado == 'Abrir Calendly':
-        # Esto redirige al usuario o le muestra el link
         return jsonify({
             "mensaje": "Copiando enlace: https://calendly.com/TU-USUARIO",
             "opciones": ["Volver al inicio"]
@@ -38,8 +44,8 @@ def chat():
     
     return jsonify({
         "mensaje": "No entendí, pero puedes contactarme directamente.",
-        "opciones": [] })
+        "opciones": [] 
+    })
 
 if __name__ == "__main__":
     app.run(debug=True)
-    
