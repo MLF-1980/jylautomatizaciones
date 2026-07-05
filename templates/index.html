@@ -66,30 +66,35 @@ function toggleChat() {
 }
 
 async function getBotResponse(estado) {
+    console.log("Enviando estado:", estado); // Esto te dirá en la consola si se activa
+    
     const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ estado: estado })
     });
+    
     const data = await response.json();
+    console.log("Respuesta recibida del servidor:", data); // Esto te dirá si el servidor responde
     
-    // Mostrar el mensaje del servidor
-    document.getElementById('chat-messages').innerText = data.mensaje;
-    
-    // Limpiar botones anteriores
-    const optionsContainer = document.getElementById('chat-options');
-    optionsContainer.innerHTML = '';
-    
-    // Crear botones nuevos dinámicamente según la respuesta del servidor
-    data.opciones.forEach(opcion => {
-        const btn = document.createElement('button');
-        btn.innerText = opcion;
-        btn.onclick = () => getBotResponse(opcion);
-        btn.style.padding = '8px';
-        btn.style.cursor = 'pointer';
-        optionsContainer.appendChild(btn);
-    });
+    // Si la respuesta es correcta, dibujamos
+    if (data.mensaje) {
+        document.getElementById('chat-messages').innerText = data.mensaje;
+        
+        // Limpiamos y dibujamos botones si existen
+        const optionsContainer = document.getElementById('chat-options');
+        optionsContainer.innerHTML = '';
+        
+        if (data.opciones && Array.isArray(data.opciones)) {
+            data.opciones.forEach(opcion => {
+                const btn = document.createElement('button');
+                btn.innerText = opcion;
+                btn.onclick = () => getBotResponse(opcion);
+                optionsContainer.appendChild(btn);
+            });
+        }
+    }
 }
-</script>
+}</script>
 </body>
 </html>
